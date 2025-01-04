@@ -10,8 +10,9 @@ pub fn screenshot(x: i32, y: i32) {
     let screens = Screen::all().unwrap();
     for screen in screens {
         let info = screen.display_info;
+        let scale_factor = info.scale_factor as i32;
         info!("Screen: {:?}", info);
-        if info.x == x && info.y == y {
+        if info.x * scale_factor == x && info.y * scale_factor == y {
             let handle = APP.get().unwrap();
             let mut app_cache_dir_path = cache_dir().expect("Get Cache Dir Failed");
             app_cache_dir_path.push(&handle.config().tauri.bundle.identifier);
