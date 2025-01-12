@@ -110,8 +110,8 @@ fn build_window(label: &str, title: &str) -> (Window, bool) {
     }
 }
 
-pub fn config_window() {
-    let (window, _exists) = build_window("config", "Config");
+pub fn settings_window() {
+    let (window, _exists) = build_window("settings", "Settings");
     window
         .set_min_size(Some(tauri::LogicalSize::new(800, 400)))
         .unwrap();
