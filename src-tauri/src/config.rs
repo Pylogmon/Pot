@@ -178,7 +178,7 @@ pub fn set<T: serde::ser::Serialize>(key: &str, value: T) {
     let state = APP.get().unwrap().state::<StoreWrapper>();
     let mut store = state.0.lock().unwrap();
     store.insert(key.to_string(), json!(value)).unwrap();
-    store.save().unwrap();
+    store.save().inspect_err(|e| eprintln!("Save config failed: {e}"));
 }
 
 pub fn is_first_run() -> bool {
