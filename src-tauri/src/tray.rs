@@ -1,6 +1,6 @@
 use crate::clipboard::*;
 use crate::config::{get, set};
-use crate::window::config_window;
+use crate::window::settings_window;
 use crate::window::input_translate;
 use crate::window::ocr_recognize;
 use crate::window::ocr_translate;
@@ -108,7 +108,7 @@ pub fn tray_event_handler<'a>(app: &'a AppHandle, event: SystemTrayEvent) {
             "copy_disable" => on_auto_copy_click(app, "disable"),
             "ocr_recognize" => on_ocr_recognize_click(),
             "ocr_translate" => on_ocr_translate_click(),
-            "config" => on_config_click(),
+            "settings" => on_settings_click(),
             "check_update" => on_check_update_click(),
             "view_log" => on_view_log_click(app),
             "restart" => on_restart_click(app),
@@ -123,17 +123,17 @@ fn on_tray_click() {
     let event = match get("tray_click_event") {
         Some(v) => v.as_str().unwrap().to_string(),
         None => {
-            set("tray_click_event", "config");
-            "config".to_string()
+            set("tray_click_event", "settings");
+            "settings".to_string()
         }
     };
     match event.as_str() {
-        "config" => config_window(),
+        "settings" => settings_window(),
         "translate" => input_translate(),
         "ocr_recognize" => ocr_recognize(),
         "ocr_translate" => ocr_translate(),
         "disable" => {}
-        _ => config_window(),
+        _ => settings_window(),
     }
 }
 fn on_input_translate_click() {
@@ -179,8 +179,8 @@ fn on_ocr_translate_click() {
     ocr_translate();
 }
 
-fn on_config_click() {
-    config_window();
+fn on_settings_click() {
+    settings_window();
 }
 
 fn on_check_update_click() {
@@ -210,7 +210,7 @@ fn tray_menu_en() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Disable");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "OCR Recognize");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "OCR Translate");
-    let config = CustomMenuItem::new("config", "Config");
+    let settings = CustomMenuItem::new("settings", "Settings");
     let check_update = CustomMenuItem::new("check_update", "Check Update");
     let view_log = CustomMenuItem::new("view_log", "View Log");
     let restart = CustomMenuItem::new("restart", "Restart");
@@ -231,7 +231,7 @@ fn tray_menu_en() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -249,7 +249,7 @@ fn tray_menu_zh_cn() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "关闭");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "文字识别");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "截图翻译");
-    let config = CustomMenuItem::new("config", "偏好设置");
+    let settings = CustomMenuItem::new("settings", "设置");
     let check_update = CustomMenuItem::new("check_update", "检查更新");
     let restart = CustomMenuItem::new("restart", "重启应用");
     let view_log = CustomMenuItem::new("view_log", "查看日志");
@@ -270,7 +270,7 @@ fn tray_menu_zh_cn() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -288,7 +288,7 @@ fn tray_menu_zh_tw() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "關閉");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "文字識別");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "截圖翻譯");
-    let config = CustomMenuItem::new("config", "偏好設定");
+    let settings = CustomMenuItem::new("settings", "設定");
     let check_update = CustomMenuItem::new("check_update", "檢查更新");
     let restart = CustomMenuItem::new("restart", "重啓程式");
     let view_log = CustomMenuItem::new("view_log", "查看日誌");
@@ -309,7 +309,7 @@ fn tray_menu_zh_tw() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -327,7 +327,7 @@ fn tray_menu_ja() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "閉じる");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "テキスト認識");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "スクリーンショットの翻訳");
-    let config = CustomMenuItem::new("config", "プリファレンス設定");
+    let settings = CustomMenuItem::new("settings", "設定");
     let check_update = CustomMenuItem::new("check_update", "更新を確認する");
     let restart = CustomMenuItem::new("restart", "アプリの再起動");
     let view_log = CustomMenuItem::new("view_log", "ログを見る");
@@ -348,7 +348,7 @@ fn tray_menu_ja() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -366,7 +366,7 @@ fn tray_menu_ko() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "닫기");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "문자인식");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "스크린샷 번역");
-    let config = CustomMenuItem::new("config", "기본 설정");
+    let settings = CustomMenuItem::new("settings", "설정");
     let check_update = CustomMenuItem::new("check_update", "업데이트 확인");
     let restart = CustomMenuItem::new("restart", "응용 프로그램 다시 시작");
     let view_log = CustomMenuItem::new("view_log", "로그 보기");
@@ -387,7 +387,7 @@ fn tray_menu_ko() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -406,7 +406,7 @@ fn tray_menu_fr() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Désactiver");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "Reconnaissance de texte");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "Traduction d'image");
-    let config = CustomMenuItem::new("config", "Paramètres");
+    let settings = CustomMenuItem::new("settings", "Paramètres");
     let check_update = CustomMenuItem::new("check_update", "Vérifier les mises à jour");
     let restart = CustomMenuItem::new("restart", "Redémarrer l'application");
     let view_log = CustomMenuItem::new("view_log", "Voir le journal");
@@ -427,7 +427,7 @@ fn tray_menu_fr() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -444,7 +444,7 @@ fn tray_menu_de() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Deaktivieren");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "Texterkennung");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "Bildübersetzung");
-    let config = CustomMenuItem::new("config", "Einstellungen");
+    let settings = CustomMenuItem::new("settings", "Einstellungen");
     let check_update = CustomMenuItem::new("check_update", "Auf Updates prüfen");
     let restart = CustomMenuItem::new("restart", "Anwendung neu starten");
     let view_log = CustomMenuItem::new("view_log", "Protokoll anzeigen");
@@ -465,7 +465,7 @@ fn tray_menu_de() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -483,7 +483,7 @@ fn tray_menu_ru() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Отключить");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "Распознавание текста");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "Перевод изображения");
-    let config = CustomMenuItem::new("config", "Настройки");
+    let settings = CustomMenuItem::new("settings", "Настройки");
     let check_update = CustomMenuItem::new("check_update", "Проверить обновления");
     let restart = CustomMenuItem::new("restart", "Перезапустить приложение");
     let view_log = CustomMenuItem::new("view_log", "Просмотр журнала");
@@ -504,7 +504,7 @@ fn tray_menu_ru() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -522,7 +522,7 @@ fn tray_menu_fa() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "متن");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "تشخیص متن");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "ترجمه عکس");
-    let config = CustomMenuItem::new("config", "تنظیمات ترجیح");
+    let settings = CustomMenuItem::new("settings", "تنظیمات ترجیح");
     let check_update = CustomMenuItem::new("check_update", "بررسی بروزرسانی");
     let restart = CustomMenuItem::new("restart", "راه‌اندازی مجدد برنامه");
     let view_log = CustomMenuItem::new("view_log", "مشاهده گزارشات");
@@ -543,7 +543,7 @@ fn tray_menu_fa() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -562,7 +562,7 @@ fn tray_menu_pt_br() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Desabilitar");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "Reconhecimento de Texto");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "Tradução de Imagem");
-    let config = CustomMenuItem::new("config", "Configurações");
+    let settings = CustomMenuItem::new("settings", "Configurações");
     let check_update = CustomMenuItem::new("check_update", "Checar por Atualização");
     let restart = CustomMenuItem::new("restart", "Reiniciar aplicativo");
     let view_log = CustomMenuItem::new("view_log", "Exibir Registro");
@@ -583,7 +583,7 @@ fn tray_menu_pt_br() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
@@ -601,7 +601,7 @@ fn tray_menu_uk() -> tauri::SystemTrayMenu {
     let copy_disable = CustomMenuItem::new("copy_disable", "Відключивши");
     let ocr_recognize = CustomMenuItem::new("ocr_recognize", "Розпізнавання тексту");
     let ocr_translate = CustomMenuItem::new("ocr_translate", "Переклад зображення");
-    let config = CustomMenuItem::new("config", "Настройка");
+    let settings = CustomMenuItem::new("settings", "Настройка");
     let check_update = CustomMenuItem::new("check_update", "Перевірити оновлення");
     let restart = CustomMenuItem::new("restart", "Перезапустити додаток");
     let view_log = CustomMenuItem::new("view_log", "Перегляд журналу");
@@ -622,7 +622,7 @@ fn tray_menu_uk() -> tauri::SystemTrayMenu {
         .add_item(ocr_recognize)
         .add_item(ocr_translate)
         .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(config)
+        .add_item(settings)
         .add_item(check_update)
         .add_item(view_log)
         .add_native_item(SystemTrayMenuItem::Separator)
