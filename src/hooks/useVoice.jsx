@@ -4,6 +4,10 @@ let source = null;
 
 export const useVoice = () => {
     const playOrStop = useCallback((data) => {
+        //若audioContext进程被暂停，则启用audioContext 
+        if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
         if (source) {
             // 如果正在播放，停止播放
             source.stop();
