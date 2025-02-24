@@ -379,14 +379,22 @@ Github: [ccslykx/Starry](https://github.com/ccslykx/Starry)
 
 在一些纯 Wayland 桌面环境/窗口管理器(如 Hyprland)上，pot 内置的截图无法使用，这时可以通过使用其他截图工具代替，详见 [不使用软件内截图](#不使用软件内截图)
 
-下面给出在 Hyprland 下的配置示例(通过 grim 和 slurp 实现截图)：
+### 在 Hyprland 下的配置示例（通过 grim 和 slurp 实现截图）：
 
 ```conf
 bind = ALT, X, exec, grim -g "$(slurp)" ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_recognize?screenshot=false"
 bind = ALT, C, exec, grim -g "$(slurp)" ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_translate?screenshot=false"
 ```
 
-其他桌面环境/窗口管理器也是类似的操作
+### 在 KDE Plasma 下的配置示例（通过 Spectacle 实现截图）：
+
+```shell
+spectacle -bnr -o ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_recognize?screenshot=false"
+```
+
+在系统设置 -> 输入和输出 -> 键盘 -> 快捷键中添加新快捷键，输入上述命令并绑定键位即可。
+
+其他桌面环境/窗口管理器也是类似的操作。
 
 ## 划词翻译窗口跟随鼠标位置
 

@@ -376,12 +376,20 @@ You can set the system shortcut and send a request with `curl` to call pot, see 
 
 In some pure Wayland desktop environments/window managers (such as Hyprland), the built-in screenshot feature of pot cannot be used. In this case, you can use other screenshot tools instead. For more details, please refer to the section [Not Using Built-in Screenshot](#not-using-built-in-screenshot).
 
-Below is a configuration example for Hyprland using `grim` and `slurp` to achieve screenshot functionality:
+### A configuration example for Hyprland using `grim` and `slurp` to achieve screenshot functionality:
 
 ```conf
 bind = ALT, X, exec, grim -g "$(slurp)" ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_recognize?screenshot=false"
 bind = ALT, C, exec, grim -g "$(slurp)" ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_translate?screenshot=false"
 ```
+
+### A configuration example for KDE Plasma using `spectacle` to achieve screenshot functionality:
+
+```shell
+spectacle -bnr -o ~/.cache/com.pot-app.desktop/pot_screenshot_cut.png && curl "127.0.0.1:60828/ocr_recognize?screenshot=false"
+```
+
+Add a new shortcut in System Settings -> Input & Output -> Keyboard -> Shortcuts, input the following command and add a keybinding.
 
 Other desktop environments/window managers also have similar operations.
 
